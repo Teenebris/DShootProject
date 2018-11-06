@@ -39,24 +39,24 @@
   {
 	   $takedata = htmlspecialchars($_GET['data']);
 
-     if($id_function = "0")
+     if($id_function == "0")
      {
        registerUser($takedata);
        exit;
      }
-     saveData($takedata);
+     /*saveData($takedata);
      $array = array('log_msg'=>'Dane zapisane');
      echo json($array);
-     exit;
+     exit;*/
   }
-  if(isset($_POST['post']))
+  /*if(isset($_POST['post']))
   {
 	   $takedata = htmlspecialchars($_POST['post']);
      saveData($takedata);
      $array = array('log_msg'=>'Dane zapisane');
      echo json($array);
      exit;
-  }
+  }*/
 
   header("Content-Type: application/json");
 
@@ -65,11 +65,16 @@
     if($id_function == "1") // pobranie danych do wyswietlenia profilu
     {
       $tab = search("users","mail",$id_function,$login);
-      //var_dump($tab);
       echo substr(json($tab), 5, -1);
       exit;
     }
 
+    if($id_function == "2") // pobranie danych do wyswietlenia rezerwacji
+    {
+      $tab = reservation($takedata);
+      echo json($tab);
+      exit;
+    }
 
     if($table == "users")
     {
@@ -85,12 +90,12 @@
   }
   else if(checkUser($login, $password))
   {
-    $array = array('id'=>'1');
+    $array = array('id'=>'1'); // logowanie pomyslne
     echo json($array);
   }
   else
   {
-    $array = array('id'=>'0');
+    $array = array('id'=>'0'); // blad logowania
     echo json($array);
     exit;
   }
