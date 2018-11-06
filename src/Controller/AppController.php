@@ -45,11 +45,34 @@ class AppController extends Controller
             'enableBeforeRedirect' => false,
         ]);
         $this->loadComponent('Flash');
+        $this->loadComponent('Auth', [
+          'loginRedirect'=> ['controller'=>'Events', 'action' => 'display'],
+          'authError'=>'Brak prawa dostępu',
+          'authorize' => ['Controller'],
+          'logoutRedirect' => ['controller' => 'Events', 'action' => 'display']
+        ]);
 
         /*
          * Enable the following component for recommended CakePHP security settings.
          * see https://book.cakephp.org/3.0/en/controllers/components/security.html
          */
         //$this->loadComponent('Security');
+    }
+
+
+    public function isAuthorized($user)
+    {
+    // Admin can access every action
+        if (isset($user['role']) && $user['role'] === 1) {
+            return true;
+        }
+
+    // Default deny
+      return false;
+    }
+
+    public function beforeFilter(Event $event)
+    {
+        $this->Auth->allow(['display']);
     }
 }

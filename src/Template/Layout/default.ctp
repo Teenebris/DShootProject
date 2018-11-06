@@ -28,30 +28,104 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
     <?= $this->Html->css('base.css') ?>
     <?= $this->Html->css('style.css') ?>
+    <?= $this->Html->css('websiteModule.css') ?>
+    <?= $this->Html->css('jhosestz.css') ?>
+    <?= $this->Html->css('main.css') ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
 </head>
 <body>
-    <nav class="top-bar expanded" data-topbar role="navigation">
-        <ul class="title-area large-3 medium-4 columns">
-            <li class="name">
-                <h1><a href=""><?= $this->fetch('title') ?></a></h1>
-            </li>
-        </ul>
-        <div class="top-bar-section">
-            <ul class="right">
-                <li><a target="_blank" href="https://book.cakephp.org/3.0/">Documentation</a></li>
-                <li><a target="_blank" href="https://api.cakephp.org/3.0/">API</a></li>
-            </ul>
-        </div>
-    </nav>
-    <?= $this->Flash->render() ?>
-    <div class="container clearfix">
-        <?= $this->fetch('content') ?>
+  <!-- Cookies Box -->
+  <div id="cookiesEU-box" class="ww_cookie_info ww_cookie_info_none">
+   <div class="cookiesEU-inner">
+    <div class="cookiesEU-text">
+    Strona korzysta z plików cookies. Możesz określić warunki przechowywania lub dostępu do plików cookies w Twojej przeglądarce.
     </div>
-    <footer>
-    </footer>
+   <a href="#" class="cookiesEU-close">Rozumiem</a>
+   </div>
+  </div>
+
+<div id="body">
+ <div id="header">
+  <div class="header-image"></div>
+  <div class="header-menu">
+   <span>Strzelnica</span>
+   <?= $this->Html->link('Strona główna',['controller' => 'Events', 'action' => 'display', '_full' => true]); ?>
+   <?= $this->Html->link('Logowanie',['controller' => 'Users', 'action' => 'login', '_full' => true]); ?>
+   <?= $this->Html->link('Rejestracja',['controller' => 'Users', 'action' => 'add', '_full' => true]); ?>
+   <a href="#">Regulamin</a>
+  </div>
+  <div class="header-title">
+   <p style="font-size: 65px; text-align: center; line-height: 78px; opacity: 0.99;">
+    <strong>
+     <span style="opacity: 0.99; color:#ffffff;">Nie masz jeszcze konta?</span>
+    </strong>
+   </p>
+  </div>
+  <div class="header-button" style="">
+   <a target="_self" href="/rejestracja" class="ww_button_link">
+    <p>Zarejestruj się</p>
+   </a>
+  </div>
+ </div>
+
+ <!-- Main module -->
+ <?= $this->Flash->render() ?>
+ <div id="container">
+  <?= $this->fetch('content') ?>
+ </div>
+
+  <div class="contact-container">
+   <div class="contact">
+    <span> Kontakt </span>
+    <div class="line"></div>
+    <div class="contact-text contact-Table" style="width: 100%;">
+     <div class="contact-TableBody">
+      <div class="contact-TableRow">
+       <div class="contact-TableCell">&nbsp;<img src="img/domek.png"/></div>
+       <div class="contact-TableCell">&nbsp;<img src="img/koperta.png"/></div>
+       <div class="contact-TableCell">&nbsp;<img src="img/telefon.png"/></div>
+      </div>
+      <div class="contact-TableRow">
+       <div class="contact-TableCell">&nbsp;<span>ul. Nadbystrzycka 38D <br/>20-618 Lublin <br/>Polska</span></div>
+       <div class="contact-TableCell">&nbsp;<span style="color: #ffffff;">strzelnica@lublin.pl</span></div>
+       <div class="contact-TableCell">&nbsp;<span style="color: #ffffff;">+48 123 456 789</span></div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <!-- Footer -->
+  <div id="footer">
+   <div class="footer-text">
+    <p style="font-size: 15px; text-align: center; line-height: 18px;">
+     <span style="color:#ffffff;">Nam delenit fuisset dissentiunt eu, mel ei rebum voluptatum appellantur, cu ipsum nostrud recusabo nec.</span>
+    </p>
+   </div>
+   <div class="footer-icon">
+     <a target="_blank" href="http://facebook.com/">
+       <img src="img/facebook-logo.png"/>
+     </a>
+     <a target="_blank" href="http://instagram.com/">
+       <img src="img/instagram-logo.png"/>
+     </a>
+     <a target="_blank" href="https://twitter.com/">
+       <img src="img/twitter-logo.png"/>
+     </a>
+     <a target="_blank" href="https://plus.google.com/">
+       <img src="img/google-plus-logo.png"/>
+     </a>
+   </div>
+   <div class="footer-bottom">• Strzelnica © 2018 • </div>
+  </div>
+ </div>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
+<script src="./js/jquery.cookie.js"></script>
+<script src="./js/jquery.cookiepolicy.js"></script>
+<script src="./js/main.js"></script>
+
 </body>
 </html>
