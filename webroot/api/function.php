@@ -52,12 +52,12 @@
     return $json = json_encode($data);
   }
 
-  function search($tablename, $row, $id_function, $param_s)
+  function userData($tablename, $row, $id_function, $param_s)
   {
     include("connect.php");
     $r = mysqli_query($connect, 'SELECT name, numer_licencji, address_country, address_city,
       address_street, address_house, address_flat_nr, zip_code
-      FROM '.$tablename.' WHERE '.$row.'="'.$param_s.'"')
+      FROM users WHERE '.$row.'="'.$param_s.'"')
       or die(json("Error: wrong request"));
 
     $tab = array();
@@ -78,6 +78,19 @@
     $string = str_replace('&quot;', '"', $data);
     $dane = $time." | ".$string."\n";
     $file = "test.txt";
+    $fp = fopen($file, "a");
+    flock($fp, 2);
+    fwrite($fp, $dane);
+    flock($fp, 3);
+    fclose($fp);
+  }
+
+  function saveData2($data)
+  {
+    $time = date('Y-m-d H:i:s');
+    $string = str_replace('&quot;', '"', $data);
+    $dane = $time." | ".$string."\n";
+    $file = "testCamera.txt";
     $fp = fopen($file, "a");
     flock($fp, 2);
     fwrite($fp, $dane);
@@ -143,8 +156,11 @@
 
   function reservation($data)
   {
+    global $opentime, $closetime;
     $hour = array();
-    for($i = 0; $i < 24; ++$i)
+    $hour[-1] = $data;
+    $check = 0;
+    for($i = $opentime; $i < $closetime; ++$i)
     {
       $hour[$i] = '0';
     }
@@ -161,9 +177,74 @@
       for ($i = $temp; $i < $temp2; ++$i)
       {
         $hour[$i] = '1';
+        $check++;
       }
     }
+    if($check >= ($closetime - $opentime))
+    {
+      $hour = reservation(date("Y-m-d", strtotime("+1 day",strtotime($data))));
+      //exit;
+    }
     return $hour;
+  }
+
+  function cameraData($data)
+  {
+    saveData2($data);
+  }
+
+  function ranks()
+  {
+    include("connect.php");
+    $r = mysqli_query($connect, 'SELECT u.username, r.rnk_overall,
+      r.rnk_average_per_shoot, r.rnk_nr_of_shoots
+      FROM ranks r
+      LEFT JOIN users u ON r.id_usr = u.Id_usr
+      ORDER BY r.rnk_overall DESC LIMIT 10')
+      or die(json("Error: wrong request"));
+
+      $tab = array();
+      $i = 0;
+      while($row = mysqli_fetch_assoc($r))
+      {
+          $i++;
+          $tab[$i]=$row;
+      }
+      return $tab;
+  }
+
+  function laststat($username)
+  {
+    include("connect.php");
+    $r = mysqli_query($connect, 'SELECT sh.sht_x, sh.sht_y
+      FROM streaks str
+      LEFT JOIN shoots sh ON sh.id_streak = str.id_streak
+      LEFT JOIN users u ON str.id_usr = u.Id_usr
+      WHERE u.mail = "'.$username.'" AND str.str_date = (SELECT s.str_date
+        FROM streaks s
+        LEFT JOIN users u ON u.Id_usr = s.id_usr
+        WHERE u.mail = "'.$username.'"
+        ORDER BY str_date DESC LIMIT 1)')
+      or die(json("Error: wrong request"));
+
+      $tab = array();
+      $i = 0;
+      while($row = mysqli_fetch_assoc($r))
+      {
+          $i++;
+          $tab[$i]=$row;
+      }
+      return $tab;
+  }
+
+  function stats($username)
+  {
+
+  }
+
+  function selectStat($username, $number)
+  {
+
   }
 
 ?>

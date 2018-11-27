@@ -5,8 +5,6 @@
 
   $login = "";
   $password = "";
-  $table = "";
-  $search = "";
   $id_function = "";
   $takedata = "";
 
@@ -20,16 +18,6 @@
      $password = htmlspecialchars($_GET['pass']);
   }
 
-  if(isset($_GET['table']))
-  {
-	   $table = htmlspecialchars($_GET['table']);
-  }
-
-  if(isset($_GET['search']))
-  {
-	   $search = htmlspecialchars($_GET['search']);
-  }
-
   if(isset($_GET['id']))
   {
 	   $id_function = htmlspecialchars($_GET['id']);
@@ -39,52 +27,67 @@
   {
 	   $takedata = htmlspecialchars($_GET['data']);
 
-     if($id_function == "0")
+     if($id_function == "0") // obsluga rejestracji
      {
        registerUser($takedata);
        exit;
      }
-     /*saveData($takedata);
-     $array = array('log_msg'=>'Dane zapisane');
-     echo json($array);
-     exit;*/
+     if($id_function == "-1") // obsluga kamery
+     {
+       cameraData($takedata);
+       exit;
+     }
   }
-  /*if(isset($_POST['post']))
-  {
-	   $takedata = htmlspecialchars($_POST['post']);
-     saveData($takedata);
-     $array = array('log_msg'=>'Dane zapisane');
-     echo json($array);
-     exit;
-  }*/
 
   header("Content-Type: application/json");
 
   if(checkUser($login, $password) && $id_function != null)
   {
-    if($id_function == "1") // pobranie danych do wyswietlenia profilu
+    if($id_function == "1") // wysylanie danych do wyswietlenia profilu
     {
-      $tab = search("users","mail",$id_function,$login);
+      $tab = userData("users","mail",$id_function,$login);
       echo substr(json($tab), 5, -1);
       exit;
     }
+    if($id_function == "1.1") // pobieranie danych do aktualizacji profilu
+    {
 
-    if($id_function == "2") // pobranie danych do wyswietlenia rezerwacji
+      echo json();
+      exit;
+    }
+
+    if($id_function == "2") // wysylanie danych do rezerwacji
     {
       $tab = reservation($takedata);
       echo json($tab);
       exit;
     }
+    if($id_function == "2.1") // pobieranie danych do rezerwacji
+    {
 
-    if($table == "users")
-    {
-      $tab = tableDataUser($login);
-    }
-    else
-    {
-      $tab = tableData($table);
+      echo json();
+      exit;
     }
 
+    if($id_function == "3") // wysylanie danych do rankingu
+    {
+      $tab = ranks();
+      echo json($tab);
+      exit;
+    }
+
+    if($id_function == "4") // wysylanie danych do wyswietlenia ostatniej serii
+    {
+      $tab = laststat($login);
+      echo json($tab);
+      exit;
+    }
+    if($id_function == "5") // wysylanie danych do wyswietlania twoich statystyk
+    {
+      $tab = laststat($login);
+      echo json($tab);
+      exit;
+    }
     echo json($tab);
     exit;
   }
