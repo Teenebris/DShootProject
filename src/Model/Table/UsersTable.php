@@ -34,6 +34,9 @@ class UsersTable extends Table
         $this->setTable('users');
         $this->setDisplayField('name');
         $this->setPrimaryKey('Id_usr');
+
+        $this->belongsTo('Ranks')
+            ->setForeignKey('Id_usr');
     }
 
     /**

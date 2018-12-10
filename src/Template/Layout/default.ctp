@@ -21,7 +21,6 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        <?= $cakeDescription ?>:
         <?= $this->fetch('title') ?>
     </title>
     <?= $this->Html->meta('icon') ?>
@@ -53,28 +52,49 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
   <div class="header-menu">
    <span>Strzelnica</span>
    <?= $this->Html->link('Strona główna',['controller' => 'Events', 'action' => 'display', '_full' => true]); ?>
-   <?= $this->Html->link('Logowanie',['controller' => 'Users', 'action' => 'login', '_full' => true]); ?>
-   <?= $this->Html->link('Rejestracja',['controller' => 'Users', 'action' => 'add', '_full' => true]); ?>
-   <a href="#">Regulamin</a>
+   <?= $this->Html->link('Ranking',['controller' => 'Ranks', 'action' => 'index', '_full' => true]);?>
+   <?php
+    if($this->Session->read('Auth'))
+    {
+      echo $this->Html->link('Twój profil',['controller' => 'Users', 'action' => 'profile_view',
+                     $this->Session->read('Auth.User.Id_usr')]);
+      echo $this->Html->link('Rezerwacja',['controller' => 'Reservations', 'action' => 'index', '_full' => true]);
+      echo $this->Html->link('Wyloguj się',['controller' => 'Users', 'action' => 'logout', '_full' => true]);
+    }
+    else
+    {
+      echo $this->Html->link('Logowanie',['controller' => 'Users', 'action' => 'login', '_full' => true]);
+      echo $this->Html->link('Rejestracja',['controller' => 'Users', 'action' => 'register', '_full' => true]);
+    }?>
   </div>
   <div class="header-title">
    <p style="font-size: 65px; text-align: center; line-height: 78px; opacity: 0.99;">
     <strong>
-     <span style="opacity: 0.99; color:#ffffff;">Nie masz jeszcze konta?</span>
+      <?php if(!$this->Session->read('Auth'))
+      {
+        echo '<span style="opacity: 0.99; color:#ffffff;">Nie masz jeszcze konta?</span>';
+      }
+      else {
+        echo '<span style="opacity: 0.99; color:#ffffff;">Witaj '.$this->Session->read('Auth.User.name').'</span>';
+        echo '<br/><br/><br/><br/><br/><br/>';
+      }
+      ?>
     </strong>
    </p>
   </div>
-  <div class="header-button" style="">
-   <a target="_self" href="/rejestracja" class="ww_button_link">
-    <p>Zarejestruj się</p>
-   </a>
-  </div>
- </div>
+  <?php if(!$this->Session->read('Auth'))
+  {
+   echo '<div class="header-button" style="">';
+   echo $this->Html->link('Zarejestruj się',['controller' => 'Users', 'action' => 'register', '_full' => true],array('class' => 'ww_button_link'));
+   echo '</div></div>';
+  }?>
 
  <!-- Main module -->
  <?= $this->Flash->render() ?>
  <div id="container">
-  <?= $this->fetch('content') ?>
+   <div style="margin-left: 10%; margin-right: 10%;">
+     <?= $this->fetch('content') ?>
+   </div>
  </div>
 
   <div class="contact-container">
@@ -84,9 +104,9 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <div class="contact-text contact-Table" style="width: 100%;">
      <div class="contact-TableBody">
       <div class="contact-TableRow">
-       <div class="contact-TableCell">&nbsp;<img src="img/domek.png"/></div>
-       <div class="contact-TableCell">&nbsp;<img src="img/koperta.png"/></div>
-       <div class="contact-TableCell">&nbsp;<img src="img/telefon.png"/></div>
+       <div class="contact-TableCell">&nbsp;<?= $this->Html->image('domek.png', ['alt' => 'House']);?></div>
+       <div class="contact-TableCell">&nbsp;<?= $this->Html->image('koperta.png', ['alt' => 'List']);?></div>
+       <div class="contact-TableCell">&nbsp;<?= $this->Html->image('telefon.png', ['alt' => 'Phone']);?></div>
       </div>
       <div class="contact-TableRow">
        <div class="contact-TableCell">&nbsp;<span>ul. Nadbystrzycka 38D <br/>20-618 Lublin <br/>Polska</span></div>
@@ -107,16 +127,16 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
    </div>
    <div class="footer-icon">
      <a target="_blank" href="http://facebook.com/">
-       <img src="img/facebook-logo.png"/>
+       <?= $this->Html->image('facebook-logo.png', ['alt' => 'Facebook']);?>
      </a>
      <a target="_blank" href="http://instagram.com/">
-       <img src="img/instagram-logo.png"/>
+       <?= $this->Html->image('instagram-logo.png', ['alt' => 'Instagram']);?>
      </a>
      <a target="_blank" href="https://twitter.com/">
-       <img src="img/twitter-logo.png"/>
+       <?= $this->Html->image('twitter-logo.png', ['alt' => 'Twitter']);?>
      </a>
      <a target="_blank" href="https://plus.google.com/">
-       <img src="img/google-plus-logo.png"/>
+       <?= $this->Html->image('google-plus-logo.png', ['alt' => 'Google']);?>
      </a>
    </div>
    <div class="footer-bottom">• Strzelnica © 2018 • </div>

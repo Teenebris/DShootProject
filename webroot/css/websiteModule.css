@@ -181,6 +181,9 @@ textarea.ww_inner_element_content {
  left: 0 ;
  position:absolute;
  background-color: rgba(0,0,0,0);
+ font-size: 46px;
+ text-align: center;
+ color: $FFFFFF;
 }
 .ww_button_text_wrapper {
  display:table;

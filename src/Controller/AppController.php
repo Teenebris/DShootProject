@@ -68,11 +68,11 @@ class AppController extends Controller
         }
 
     // Default deny
-      return false;
+      return true;
     }
 
     public function beforeFilter(Event $event)
     {
-        $this->Auth->allow(['display']);
+        $this->Auth->allow(['display', 'index']);
     }
 }

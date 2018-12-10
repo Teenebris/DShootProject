@@ -20,6 +20,14 @@ class RanksController extends AppController
      */
     public function index()
     {
+        //$ranks = $this->paginate($this->Ranks, 'Users');
+
+        //$this->set(compact('ranks'));
+
+        $this->paginate = [
+          'contain' => ['Users']
+        ];
+
         $ranks = $this->paginate($this->Ranks);
 
         $this->set(compact('ranks'));
@@ -35,10 +43,11 @@ class RanksController extends AppController
     public function view($id = null)
     {
         $rank = $this->Ranks->get($id, [
-            'contain' => []
+            'contain' => ['Users']
         ]);
 
         $this->set('rank', $rank);
+
     }
 
     /**

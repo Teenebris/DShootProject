@@ -34,6 +34,11 @@ class RanksTable extends Table
         $this->setTable('ranks');
         $this->setDisplayField('id_rank');
         $this->setPrimaryKey('id_rank');
+
+        $this->hasMany('Users', [
+          'foreignKey' => 'Id_usr', // unnecessary if user_id
+          ]);
+
     }
 
     /**

@@ -20,7 +20,7 @@ class UsersController extends AppController
         // Allow users to register and logout.
         // You should not add the "login" action to allow list. Doing so would
         // cause problems with normal functioning of AuthComponent.
-        $this->Auth->allow(['add', 'logout', 'profileEdit', 'profileView','profile','hasher']);
+        $this->Auth->allow(['add', 'logout', 'profileEdit', 'profileView','profile','hasher', 'ranks']);
 
     }
 
@@ -78,7 +78,7 @@ class UsersController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function register()
     {
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
@@ -159,14 +159,25 @@ class UsersController extends AppController
 
     public function login()
     {
-        if ($this->request->is('post')) {
-            $user = $this->Auth->identify();
-            if ($user) {
-                $this->Auth->setUser($user);
-                return $this->redirect($this->Auth->redirectUrl());
+      if($this->request->is('post'))
+              {
+                if(!filter_var($this->request->data['username'], FILTER_VALIDATE_EMAIL)===false){
+                  $this->Auth->config('authenticate', [
+                      'Form'=>['fields'=>['username'=>'mail', 'password'=>'password']]
+                  ]);
+                  $this->Auth->constructAuthenticate();
+                  $this->request->data['mail']=$this->request->data['username'];
+                  unset($this->request->data['username']);
+                  pr($this->request->data);
+
+                  $user=$this->Auth->identify();
+                  if($user){
+                      $this->Auth->setUser($user);
+                      return $this->redirect($this->Auth->redirectUrl());
+                  }
+              }
+              $this->Flash->error(__('Blad logowania'));
             }
-            $this->Flash->error(__('Invalid username or password, try again'));
-        }
     }
 
     public function logout()
@@ -207,11 +218,11 @@ class UsersController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
+                $this->Flash->success(__('Aktualizacja profilu powiodla sie'));
 
                 return $this->redirect(['action' => 'profile_view']);
             }
-            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+            $this->Flash->error(__('Nie udalo sie zaktualizowac profilu.'));
         }
         $this->set(compact('user'));
     }

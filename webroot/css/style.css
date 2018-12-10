@@ -4,11 +4,27 @@ a.disabled {
 }
 
 a:hover {
-    color: #15848F;
+    color: #FFFFFF;
 }
 
 a {
-    color: #1798A5;
+    color: #FFFFFF;
+}
+
+th > a:hover{
+  color: #15848F;
+}
+
+th > a {
+  color: #15848F;
+}
+
+.other > a:hover{
+  color: #15848F;
+}
+
+.other > a {
+  color: #15848F;
 }
 
 .side-nav li a:not(.button) {

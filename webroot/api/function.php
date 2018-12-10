@@ -70,6 +70,37 @@
     return $tab;
   }
 
+  function userUpdate($mail,$data)
+  {
+    $letters = array('&quot;', '{', '}');
+    $data = str_replace($letters, '', $data);
+    $dane = explode(",", $data);
+
+    $temp = count($dane);
+
+    for($i = 0; $i < $temp; $i++)
+    {
+      $table[$i] = explode(":", $dane[$i]);
+    }
+
+    include("connect.php");
+
+    var_dump($table);
+
+    $r = mysqli_query($connect, 'UPDATE users
+      SET address_country = "'.$table[1][1].'",
+      address_city = "'.$table[2][1].'",
+      address_street = "'.$table[3][1].'",
+      address_house = "'.$table[4][1].'",
+      address_flat_nr = "'.$table[5][1].'",
+      zip_code = "'.$table[6][1].'",
+      numer_licencji = "'.$table[0][1].'"
+      WHERE mail="'.$mail.'"')
+      or die(json(array("Error"=>"wrong request")));
+
+    return array("Error"=> 0); // aktualizacja powiodla sie
+  }
+
   // Debug function
   // /*
   function saveData($data)
@@ -123,7 +154,7 @@
 
     $ile = mysqli_num_rows($r) + mysqli_num_rows($r2);
     if($ile!=0) {
-      json("Taki użytkownik istnieje");
+      json(array("Error"=>"1"));
       exit;
     }
 
@@ -152,9 +183,10 @@
 	    }
 		}
 		curl_close($c);
+    json(array("Error"=>"0"));
   }
 
-  function reservation($data)
+  function reservation($data, $nAxis)
   {
     global $opentime, $closetime;
     $hour = array();
@@ -165,8 +197,8 @@
       $hour[$i] = '0';
     }
     include("connect.php");
-    $r = mysqli_query($connect, 'SELECT * FROM reservations WHERE res_date_start>"'.
-      $data.'" AND res_date_end <"'.date("Y-m-d", strtotime("+1 day",strtotime($data))).'"')
+    $r = mysqli_query($connect, 'SELECT * FROM reservations WHERE id_lane="'.$nAxis.'" AND  (res_date_start>"'.
+      $data.'" AND res_date_end <"'.date("Y-m-d", strtotime("+1 day",strtotime($data))).'")')
       or die(json("Error: wrong request"));
 
     while($row = mysqli_fetch_assoc($r))
@@ -182,7 +214,7 @@
     }
     if($check >= ($closetime - $opentime))
     {
-      $hour = reservation(date("Y-m-d", strtotime("+1 day",strtotime($data))));
+      $hour = reservation(date("Y-m-d", strtotime("+1 day",strtotime($data))),$nAxis);
       //exit;
     }
     return $hour;
@@ -225,7 +257,7 @@
         LEFT JOIN users u ON u.Id_usr = s.id_usr
         WHERE u.mail = "'.$username.'"
         ORDER BY str_date DESC LIMIT 1)')
-      or die(json("Error: wrong request"));
+      or die(json(array("Error" => "wrong request")));
 
       $tab = array();
       $i = 0;
@@ -245,6 +277,31 @@
   function selectStat($username, $number)
   {
 
+  }
+
+  function engine()
+  {
+    $address = "http://192.168.1.100:8080/led?czas=2000&state=0";
+
+    ini_set('max_execution_time', 10); // set execution time on request at 5sec
+		$c = curl_init();
+		curl_setopt($c, CURLOPT_URL, $address);
+
+    saveData($address); //debug
+
+		curl_setopt($c, CURLOPT_TIMEOUT, 5); // set timeout on request at 3sec
+    curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
+		curl_exec($c);
+		if ($error_number = curl_errno($c))
+		{
+	    if (in_array($error_number, array(CURLE_OPERATION_TIMEDOUT, CURLE_OPERATION_TIMEOUTED)))
+			{
+	        echo json(array("Error" => "cURL Timeout"));
+					exit;
+	    }
+		}
+		curl_close($c);
+    json(array("Error"=>"0"));
   }
 
 ?>

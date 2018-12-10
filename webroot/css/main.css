@@ -445,3 +445,13 @@ body
     margin-right: 0;
   }
 }
+
+.eventsData
+{
+  margin-right: 15px;
+  margin-bottom: 8px;
+  border: 1px solid silver;
+  background: white; padding: 4px;
+  border-radius: 3px;
+  box-shadow: 1px 1px 3px silver;
+}

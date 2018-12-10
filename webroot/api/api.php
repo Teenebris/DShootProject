@@ -37,6 +37,10 @@
        cameraData($takedata);
        exit;
      }
+     else if($id_function == null)
+     {
+       saveData($takedata);
+     }
   }
 
   header("Content-Type: application/json");
@@ -51,21 +55,22 @@
     }
     if($id_function == "1.1") // pobieranie danych do aktualizacji profilu
     {
-
-      echo json();
+      $tab = userUpdate($login, $takedata);
+      echo json($tab);
       exit;
     }
 
     if($id_function == "2") // wysylanie danych do rezerwacji
     {
-      $tab = reservation($takedata);
+      $exp_data = explode(",", $takedata);
+      $tab = reservation($exp_data[0],$exp_data[1]);
       echo json($tab);
       exit;
     }
     if($id_function == "2.1") // pobieranie danych do rezerwacji
     {
-
-      echo json();
+      saveData($takedata);
+      //echo json();
       exit;
     }
 
@@ -76,7 +81,7 @@
       exit;
     }
 
-    if($id_function == "4") // wysylanie danych do wyswietlenia ostatniej serii
+    if($id_function == "4") // wysylanie danych do wyswietlenia ostatniej serii (tarcza)
     {
       $tab = laststat($login);
       echo json($tab);
@@ -88,6 +93,13 @@
       echo json($tab);
       exit;
     }
+
+    if($id_function == "6") // wysylanie sygnalu do silnika
+    {
+      $tab = engine();
+      exit;
+    }
+
     echo json($tab);
     exit;
   }

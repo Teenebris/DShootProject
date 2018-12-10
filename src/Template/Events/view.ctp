@@ -34,5 +34,5 @@
             <th scope="row"><?= __('Evn End Date') ?></th>
             <td><?= h($event->evn_end_date) ?></td>
         </tr>
-    </table>
+    </table>    
     <br/>
