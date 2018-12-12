@@ -15,5 +15,8 @@
         </div>
       </div>
     </div>
+    <?= $this->Html->image("cake.icon.png", [
+        "alt" => "Edit",
+        'url' => ['action' => 'edit', $event->id_event]]);?>
   <?php endforeach; ?>
 </div>

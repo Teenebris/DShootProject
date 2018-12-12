@@ -5,15 +5,15 @@
  */
 ?>
 
+<?= $this->Html->script('ckeditor/ckeditor.js') ?>
+<?= $this->Html->script('ckeditor/adapters/jquery.js') ?>
+<?= $this->Html->script('http://cdn.ckeditor.com/4.9.2/full/ckeditor.js') ?>
+
 <script>
     jQuery(function($){
         $('#tresc').ckeditor();
     })
 </script>
-
-<?= $this->Html->script('ckeditor/ckeditor.js') ?>
-<?= $this->Html->script('ckeditor/adapters/jquery.js') ?>
-<?= $this->Html->script('http://cdn.ckeditor.com/4.9.2/full/ckeditor.js') ?>
 
     <?= $this->Form->create($event) ?>
     <fieldset>

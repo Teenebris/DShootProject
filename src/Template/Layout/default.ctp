@@ -59,6 +59,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
       echo $this->Html->link('Twój profil',['controller' => 'Users', 'action' => 'profile_view',
                      $this->Session->read('Auth.User.Id_usr')]);
       echo $this->Html->link('Rezerwacja',['controller' => 'Reservations', 'action' => 'index', '_full' => true]);
+      echo $this->Html->link('Twoje serie',['controller' => 'Streaks', 'action' => 'index', '_full' => true]);
       echo $this->Html->link('Wyloguj się',['controller' => 'Users', 'action' => 'logout', '_full' => true]);
     }
     else

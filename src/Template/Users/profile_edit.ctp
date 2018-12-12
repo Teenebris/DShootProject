@@ -12,8 +12,8 @@
             echo $this->Form->control('address_city');
             echo $this->Form->control('address_street');
             echo $this->Form->control('address_house');
-            echo $this->Form->control('address_falt_nr');
-            echo $this->Form->control('numer_licencji');
+            echo $this->Form->control('address_flat_nr');
+            echo $this->Form->control('numer_licencji', ['label'=>'Number license']);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

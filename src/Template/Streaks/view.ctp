@@ -4,53 +4,56 @@
  * @var \App\Model\Entity\Streak $streak
  */
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Streak'), ['action' => 'edit', $streak->id_streak]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Streak'), ['action' => 'delete', $streak->id_streak], ['confirm' => __('Are you sure you want to delete # {0}?', $streak->id_streak)]) ?> </li>
-        <li><?= $this->Html->link(__('List Streaks'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Streak'), ['action' => 'add']) ?> </li>
-    </ul>
-</nav>
-<div class="streaks view large-9 medium-8 columns content">
-    <h3><?= h($streak->id_streak) ?></h3>
+
+<?php
+$value = 0;
+$data = "";
+$ammo = 0;
+  foreach ($streak->shoots as $dShoot):
+    $value = $value + $dShoot->sht_value;
+    $data = $data.$dShoot->sht_x.",".$dShoot->sht_y.";";
+    $ammo++;
+  endforeach;
+?>
+
+  <h3><?= h('Statystyki') ?></h3>
+  <div style="width:65%; height:auto; margin:0px auto; float:left;">
     <table class="vertical-table">
         <tr>
-            <th scope="row"><?= __('Id Streak') ?></th>
+            <th scope="row"><?= __('Numer serii') ?></th>
             <td><?= $this->Number->format($streak->id_streak) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Id Weapon') ?></th>
-            <td><?= $this->Number->format($streak->id_weapon) ?></td>
+            <th scope="row"><?= __('Nazwa bronii') ?></th>
+            <td><?= h($streak->weapon->wpn_type) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Id Usr') ?></th>
-            <td><?= $this->Number->format($streak->id_usr) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Id Lane') ?></th>
+            <th scope="row"><?= __('Numer linii') ?></th>
             <td><?= $this->Number->format($streak->id_lane) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Id Target') ?></th>
-            <td><?= $this->Number->format($streak->id_target) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Str Amount') ?></th>
+            <th scope="row"><?= __('Ilość oddanych strzałów') ?></th>
             <td><?= $this->Number->format($streak->str_amount) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Str Range') ?></th>
+            <th scope="row"><?= __('Ilość celnych strzałów') ?></th>
+            <td><?= $this->Number->format($ammo) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Odległość') ?></th>
             <td><?= $this->Number->format($streak->str_range) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Str Mode') ?></th>
-            <td><?= $this->Number->format($streak->str_mode) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Str Date') ?></th>
+            <th scope="row"><?= __('Data') ?></th>
             <td><?= h($streak->str_date) ?></td>
         </tr>
+        <tr>
+            <th scope="row"><?= __('Punkty') ?></th>
+            <td><?= h($value) ?></td>
+        </tr>
     </table>
-</div>
+  </div>
+  <div style="width:5%; height:auto; margin:0px auto; float:left;">.</div>
+  <div style="width:30%; height:auto; margin:0px auto; float:left;">
+    <?= $this->Html->image('tarcza.php?data='.$data, ['alt' => 'Google']);?>
+  </div>

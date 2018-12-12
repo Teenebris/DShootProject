@@ -5,7 +5,7 @@
  */
 ?>
     <div class="other">
-      <?= $this->Html->link('Zarezerwuj termin',['controller' => 'Reservations', 'action' => 'add', '_full' => true]);?>
+      <?= $this->Html->link('Zarezerwuj termin',['controller' => 'Reservations', 'action' => 'calendar', '_full' => true]);?>
     </div>
 
     <table cellpadding="0" cellspacing="0">

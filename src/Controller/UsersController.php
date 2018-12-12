@@ -20,7 +20,7 @@ class UsersController extends AppController
         // Allow users to register and logout.
         // You should not add the "login" action to allow list. Doing so would
         // cause problems with normal functioning of AuthComponent.
-        $this->Auth->allow(['add', 'logout', 'profileEdit', 'profileView','profile','hasher', 'ranks']);
+        $this->Auth->allow(['register', 'logout', 'profileEdit', 'profileView','profile','hasher', 'ranks']);
 
     }
 
@@ -220,7 +220,7 @@ class UsersController extends AppController
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('Aktualizacja profilu powiodla sie'));
 
-                return $this->redirect(['action' => 'profile_view']);
+                return $this->redirect(['action' => 'profile_view', $id]);
             }
             $this->Flash->error(__('Nie udalo sie zaktualizowac profilu.'));
         }

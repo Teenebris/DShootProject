@@ -34,6 +34,12 @@ class StreaksTable extends Table
         $this->setTable('streaks');
         $this->setDisplayField('id_streak');
         $this->setPrimaryKey('id_streak');
+
+        $this->hasMany('Shoots')
+            ->setForeignKey('id_streak');
+        $this->belongsTo('Weapons', [
+            'foreignKey' => 'id_weapon',
+            ]);
     }
 
     /**

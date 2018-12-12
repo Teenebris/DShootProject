@@ -35,7 +35,7 @@ class StreaksController extends AppController
     public function view($id = null)
     {
         $streak = $this->Streaks->get($id, [
-            'contain' => []
+            'contain' => ['Shoots', 'Weapons']
         ]);
 
         $this->set('streak', $streak);

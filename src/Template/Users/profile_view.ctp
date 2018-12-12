@@ -42,3 +42,7 @@
             <td><?= h($user->numer_licencji) ?></td>
         </tr>
     </table>
+
+        <?= $this->Html->image("cake.icon.png", [
+            "alt" => "Edit",
+            'url' => ['action' => 'profile_edit', $user->Id_usr]]);?>
